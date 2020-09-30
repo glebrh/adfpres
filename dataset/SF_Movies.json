@@ -1,0 +1,54 @@
+{
+	"name": "SF_Movies",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SF_Target",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "PRIMARYGENRE",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "YEAR",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "AVGRATING",
+				"type": "FLOAT",
+				"precision": 15,
+				"scale": 0
+			},
+			{
+				"name": "HIGHESTRATED",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "LOWESTRATED",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "NUMBEROFMOVIEW",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "PUBLIC",
+			"table": "MOVIES"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

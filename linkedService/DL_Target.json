@@ -1,0 +1,11 @@
+{
+	"name": "DL_Target",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://adfpresbs.dfs.core.windows.net"
+		}
+	}
+}

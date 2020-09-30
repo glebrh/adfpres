@@ -1,0 +1,22 @@
+{
+	"name": "PG_Source",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "PostgreSql",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AKV",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "adfpresPGCS"
+			}
+		},
+		"connectVia": {
+			"referenceName": "LocalIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

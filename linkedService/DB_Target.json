@@ -1,0 +1,28 @@
+{
+	"name": "DB_Target",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AKV",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "adfpresdbCS"
+			},
+			"servicePrincipalId": "58642421-f329-499f-a1fe-a875704c8839",
+			"servicePrincipalKey": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AKV",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "adfpresSPsecret"
+			},
+			"tenant": "6c51c659-9d52-41af-81f7-dde16380e813"
+		}
+	}
+}

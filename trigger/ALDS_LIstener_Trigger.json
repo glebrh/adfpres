@@ -1,0 +1,24 @@
+{
+	"name": "ALDS_LIstener_Trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "3_Listen_ADLS",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/landing/blobs/files/",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/6bd6408c-ed5d-44b0-8ca4-673232a748ea/resourceGroups/adfpres/providers/Microsoft.Storage/storageAccounts/adfpresbs",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

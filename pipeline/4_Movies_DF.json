@@ -1,0 +1,36 @@
+{
+	"name": "4_Movies_DF",
+	"properties": {
+		"activities": [
+			{
+				"name": "Movies",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "Movie_Analytics",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "4_Movies_DF"
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-09-30T10:39:32Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,44 @@
+{
+	"name": "Movie_Analytics",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ADLS_Movies",
+						"type": "DatasetReference"
+					},
+					"name": "MoviesSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SF_Movies",
+						"type": "DatasetReference"
+					},
+					"name": "SF"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SelectColumns"
+				},
+				{
+					"name": "FilterYear"
+				},
+				{
+					"name": "DerivePrimaryGenre"
+				},
+				{
+					"name": "RankMoviesByRatings"
+				},
+				{
+					"name": "CreateAggs"
+				}
+			],
+			"script": "source(output(\n\t\tmovie as string,\n\t\ttitle as string,\n\t\tgenres as string,\n\t\tyear as string,\n\t\tRating as string,\n\t\t{Rotton Tomato} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> MoviesSource\nMoviesSource select(mapColumn(\n\t\tmovie,\n\t\ttitle,\n\t\tgenres,\n\t\tyear,\n\t\tRating,\n\t\tRottenTomato = {Rotton Tomato}\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColumns\nSelectColumns filter(toInteger(year) > 1950) ~> FilterYear\nFilterYear derive(PrimaryGenre = iif(locate('|', genres) > 1, left(genres, locate('|', genres) - 1), genres)) ~> DerivePrimaryGenre\nDerivePrimaryGenre window(over(PrimaryGenre,\n\t\tyear),\n\tasc(RottenTomato, true),\n\tRatingsRank = rank()) ~> RankMoviesByRatings\nRankMoviesByRatings aggregate(groupBy(PrimaryGenre,\n\t\tyear),\n\tAvgRating = avg(toInteger(RottenTomato)),\n\t\tHighestRated = first(title),\n\t\tLowestRated = last(title),\n\t\tNumberOfMoview = count()) ~> CreateAggs\nCreateAggs sink(input(\n\t\tPRIMARYGENRE as string,\n\t\tYEAR as string,\n\t\tAVGRATING as double,\n\t\tHIGHESTRATED as string,\n\t\tLOWESTRATED as string,\n\t\tNUMBEROFMOVIEW as decimal(38,0)\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\ttruncate:true,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SF"
+		}
+	}
+}
