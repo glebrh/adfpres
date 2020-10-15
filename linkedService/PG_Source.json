@@ -1,6 +1,5 @@
 {
 	"name": "PG_Source",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "PostgreSql",
@@ -13,10 +12,7 @@
 				},
 				"secretName": "adfpresPGCS"
 			}
-		},
-		"connectVia": {
-			"referenceName": "LocalIR",
-			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
