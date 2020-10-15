@@ -1,7 +1,0 @@
-{
-	"name": "LocalIR",
-	"properties": {
-		"type": "SelfHosted",
-		"description": "Local PC IR"
-	}
-}
