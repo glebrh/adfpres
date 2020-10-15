@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfpresadf"
+		},
+		"AKV_properties_typeProperties_baseUrl": {
+			"value": "https://adfpreskv.vault.azure.net/"
+		},
+		"BS_Source_properties_typeProperties_serviceEndpoint": {
+			"value": "https://glebekblobs.blob.core.windows.net"
+		},
+		"DB_Target_properties_typeProperties_connectionString_secretName": {
+			"value": "adfpresdbCS"
+		},
+		"DB_Target_properties_typeProperties_servicePrincipalId": {
+			"value": "58642421-f329-499f-a1fe-a875704c8839"
+		},
+		"DB_Target_properties_typeProperties_tenant": {
+			"value": "6c51c659-9d52-41af-81f7-dde16380e813"
+		},
+		"DL_Target_properties_typeProperties_url": {
+			"value": "https://adfpresbs.dfs.core.windows.net"
+		},
+		"PG_Source_properties_typeProperties_connectionString_secretName": {
+			"value": "adfpresPGCS"
+		},
+		"SF_Target_properties_typeProperties_connectionString_secretName": {
+			"value": "adfpresSFCN"
+		},
+		"ALDS_LIstener_Trigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/6bd6408c-ed5d-44b0-8ca4-673232a748ea/resourceGroups/adfpres/providers/Microsoft.Storage/storageAccounts/adfpresbs"
+		}
+	}
+}

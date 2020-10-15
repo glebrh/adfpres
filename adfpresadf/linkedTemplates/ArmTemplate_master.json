@@ -1,0 +1,105 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfpresadf"
+		},
+		"AKV_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://adfpreskv.vault.azure.net/"
+		},
+		"BS_Source_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://glebekblobs.blob.core.windows.net"
+		},
+		"DB_Target_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "adfpresdbCS"
+		},
+		"DB_Target_properties_typeProperties_servicePrincipalId": {
+			"type": "string",
+			"defaultValue": "58642421-f329-499f-a1fe-a875704c8839"
+		},
+		"DB_Target_properties_typeProperties_tenant": {
+			"type": "string",
+			"defaultValue": "6c51c659-9d52-41af-81f7-dde16380e813"
+		},
+		"DL_Target_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://adfpresbs.dfs.core.windows.net"
+		},
+		"PG_Source_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "adfpresPGCS"
+		},
+		"SF_Target_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "adfpresSFCN"
+		},
+		"ALDS_LIstener_Trigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/6bd6408c-ed5d-44b0-8ca4-673232a748ea/resourceGroups/adfpres/providers/Microsoft.Storage/storageAccounts/adfpresbs"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adfpresadf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AKV_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AKV_properties_typeProperties_baseUrl')]"
+					},
+					"BS_Source_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('BS_Source_properties_typeProperties_serviceEndpoint')]"
+					},
+					"DL_Target_properties_typeProperties_url": {
+						"value": "[parameters('DL_Target_properties_typeProperties_url')]"
+					},
+					"DB_Target_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('DB_Target_properties_typeProperties_connectionString_secretName')]"
+					},
+					"DB_Target_properties_typeProperties_servicePrincipalId": {
+						"value": "[parameters('DB_Target_properties_typeProperties_servicePrincipalId')]"
+					},
+					"DB_Target_properties_typeProperties_tenant": {
+						"value": "[parameters('DB_Target_properties_typeProperties_tenant')]"
+					},
+					"PG_Source_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('PG_Source_properties_typeProperties_connectionString_secretName')]"
+					},
+					"SF_Target_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('SF_Target_properties_typeProperties_connectionString_secretName')]"
+					},
+					"ALDS_LIstener_Trigger_properties_typeProperties_scope": {
+						"value": "[parameters('ALDS_LIstener_Trigger_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
