@@ -89,17 +89,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LocalIR')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "SelfHosted",
-				"description": "Local PC IR",
-				"typeProperties": {}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/ADLS_Connection')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -839,7 +828,14 @@
 					{
 						"name": "Get_Metadata",
 						"type": "Lookup",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Set_Var",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -918,8 +914,26 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Set_Var",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Test",
+							"value": {
+								"value": "1",
+								"type": "Expression"
+							}
+						}
 					}
 				],
+				"variables": {
+					"Test": {
+						"type": "String"
+					}
+				},
 				"folder": {
 					"name": "1_ADLS_SQL"
 				},

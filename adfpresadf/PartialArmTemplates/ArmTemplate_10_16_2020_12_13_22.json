@@ -1,0 +1,140 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfpresadf"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/1_CopySQLStage')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Copy staging data from ADLS gen2 into Azure SQL",
+				"activities": [
+					{
+						"name": "Get_Metadata",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Set_Var",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_Table",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableSchema": "trips",
+									"TableName": "metadata"
+								}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Iterate_Tables",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get_Metadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get_Metadata').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 5,
+							"activities": [
+								{
+									"name": "Copy_File",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "1_CopySQLStageTable",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"FilePath": {
+												"value": "@item().FilePath",
+												"type": "Expression"
+											},
+											"FileName": {
+												"value": "@item().FileName",
+												"type": "Expression"
+											},
+											"TableSchema": {
+												"value": "@item().DestinationSchema",
+												"type": "Expression"
+											},
+											"TableName": {
+												"value": "@item().DestinationTable",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Set_Var",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Test",
+							"value": {
+								"value": "1",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"variables": {
+					"Test": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "1_ADLS_SQL"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-09-30T08:53:58Z"
+			},
+			"dependsOn": []
+		}
+	]
+}
