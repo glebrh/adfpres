@@ -4,7 +4,7 @@
 		"description": "Copy staging data from ADLS gen2 into Azure SQL",
 		"activities": [
 			{
-				"name": "Get_Metadata",
+				"name": "Get_Metadat",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -44,7 +44,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Get_Metadata",
+						"activity": "Get_Metadat",
 						"dependencyConditions": [
 							"Succeeded"
 						]
